@@ -54,7 +54,6 @@ ARG NODE_VERSION=node
 ENV NODE_VERSION ${NODE_VERSION}
 ENV NVM_DIR $HOME/.nvm
 ARG INSTALL_NODE=false
-ARG YARN_INSTALL=false
 
 # Install NVM
 RUN if [ ${NVM_INSTALL} = true ]; then \
@@ -72,11 +71,6 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
-;fi
-
-# Install Yarn
-RUN if [ ${YARN_INSTALL} = true ]; then \
-    npm install -g yarn \
 ;fi
 
 ## START: Nginx ##
@@ -102,7 +96,7 @@ USER root
 
 RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
-    echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/.bashrc && \
+    echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
 ;fi
 

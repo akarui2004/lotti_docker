@@ -22,7 +22,6 @@ services:
         - COMPOSER_INSTALL=${COMPOSER_INSTALL}
         - NVM_INSTALL=${NVM_INSTALL}
         - NODE_VERSION=${NODE_VERSION}
-        - YARN_INSTALL=${YARN_INSTALL}
         - INSTALL_NODE=${INSTALL_NODE}
         - http_proxy
         - https_proxy
