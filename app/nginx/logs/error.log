@@ -1,0 +1,3 @@
+2022/07/31 16:29:28 [emerg] 1#1: "daemon" directive is duplicate in /etc/nginx/nginx.conf:4
+2022/07/31 16:38:19 [emerg] 413#413: no port in upstream "php-upstream" in /etc/nginx/sites-available/default.conf:22
+2022/07/31 16:38:25 [emerg] 444#444: no port in upstream "php-upstream" in /etc/nginx/sites-available/default.conf:22

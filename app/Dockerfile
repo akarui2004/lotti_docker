@@ -4,7 +4,7 @@ LABEL maintainer="Minh Doan <minhdpc@gmail.com>"
 
 ## Install PHP repository to debian
 RUN apt-get update \
-    && apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 wget openssl bash curl
+    && apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 wget openssl bash curl cron nano
 
 ## Add sury debian PPA repository
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
@@ -80,8 +80,7 @@ RUN if [ ${YARN_INSTALL} = true ]; then \
 
 ## START: Nginx ##
 COPY ./nginx/conf/nginx.conf /etc/nginx/
-ADD ./nginx/startup.sh /opt/startup.sh
-RUN sed -i 's/\r//g' /opt/startup.sh
+ADD ./nginx/default/index.php /var/www/html
 ## END: Nginx ##
 
 # Clean up
@@ -106,6 +105,12 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
 ;fi
 
-CMD ["php-fpm", "/bin/bash", "/opt/startup.sh"]
+# Policy
+RUN echo "exit 0" > /usr/sbin/policy-rc.d
+
+# nginx
+ARG PHP_VERSION
+ENV PHP_VERSION ${PHP_VERSION}
+CMD service php8.1-fpm start && nginx -g "daemon off;"
 
 EXPOSE 80 443
