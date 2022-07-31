@@ -48,6 +48,36 @@ RUN if [ ${COMPOSER_INSTALL} = true ]; then \
     && ln -s /opt/composer.phar /usr/local/bin/composer \
 ;fi
 
+# NVM arg and env
+ARG NVM_INSTALL=${NVM_INSTALL}
+ARG NODE_VERSION=node
+ENV NODE_VERSION ${NODE_VERSION}
+ENV NVM_DIR $HOME/.nvm
+ARG INSTALL_NODE=false
+
+# Install NVM
+RUN if [ ${NVM_INSTALL} = true ]; then \
+    mkdir -p $NVM_DIR \
+    && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install ${NODE_VERSION} \
+    && nvm use ${NODE_VERSION} \
+    && nvm alias ${NODE_VERSION} \
+;fi
+
+# Wouldn't execute when added to the RUN statement in the above block
+# Source NVM when loading bash since ~/.profile isn't loaded on non-login shell
+RUN if [ ${INSTALL_NODE} = true ]; then \
+    echo "" >> ~/.bashrc && \
+    echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
+;fi
+
+# Install Yarn
+RUN if [ ${YARN_INSTALL} = true ]; then \
+    npm install -g yarn \
+;fi
+
 ## START: Nginx ##
 COPY ./nginx/conf/nginx.conf /etc/nginx/
 ADD ./nginx/startup.sh /opt/startup.sh
@@ -66,6 +96,15 @@ ENV LC_ALL ${LOCALE}
 # Setting workdir
 ARG WORK_DIR
 WORKDIR /var/www
+
+# Add NVM binaries to root's .bashrc
+USER root
+
+RUN if [ ${INSTALL_NODE} = true ]; then \
+    echo "" >> ~/.bashrc && \
+    echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/.bashrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
+;fi
 
 CMD ["php-fpm", "/bin/bash", "/opt/startup.sh"]
 
