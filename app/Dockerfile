@@ -4,7 +4,7 @@ LABEL maintainer="Minh Doan <minhdpc@gmail.com>"
 
 ## Install PHP repository to debian
 RUN apt-get update \
-    && apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 wget openssl bash curl cron nano
+    && apt install -y lsb-release ca-certificates zip unzip apt-transport-https software-properties-common gnupg2 wget openssl bash curl cron nano
 
 ## Add sury debian PPA repository
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
