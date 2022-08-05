@@ -4,7 +4,7 @@ LABEL maintainer="Minh Doan <minhdpc@gmail.com>"
 
 ## Install PHP repository to debian
 RUN apt-get update \
-    && apt install -y lsb-release ca-certificates zip unzip apt-transport-https software-properties-common gnupg2 wget openssl bash curl cron nano
+    && apt install -y lsb-release ca-certificates zip unzip apt-utils apt-transport-https software-properties-common gnupg2 wget openssl bash curl cron nano
 
 ## Add sury debian PPA repository
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
@@ -71,7 +71,11 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
+    echo 'alias node=nodejs' >> ~/.bashrc \
 ;fi
+
+# RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+# RUN apt-get update && apt install -y --no-install-recommends yarn
 
 ## START: Nginx ##
 COPY ./nginx/conf/nginx.conf /etc/nginx/
