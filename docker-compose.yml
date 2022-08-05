@@ -21,6 +21,7 @@ services:
         - PHP_VERSION=${PHP_VERSION}
         - COMPOSER_INSTALL=${COMPOSER_INSTALL}
         - NVM_INSTALL=${NVM_INSTALL}
+        - YARN_INSTALL=${YARN_INSTALL}
         - NODE_VERSION=${NODE_VERSION}
         - INSTALL_NODE=${INSTALL_NODE}
         - http_proxy

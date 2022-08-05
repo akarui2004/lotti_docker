@@ -50,10 +50,11 @@ RUN if [ ${COMPOSER_INSTALL} = true ]; then \
 
 # NVM arg and env
 ARG NVM_INSTALL=${NVM_INSTALL}
+ARG YARN_INSTALL=${YARN_INSTALL}
 ARG NODE_VERSION=node
 ENV NODE_VERSION ${NODE_VERSION}
 ENV NVM_DIR $HOME/.nvm
-ARG INSTALL_NODE=false
+ARG INSTALL_NODE=${INSTALL_NODE}
 
 # Install NVM
 RUN if [ ${NVM_INSTALL} = true ]; then \
@@ -74,8 +75,12 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo 'alias node=nodejs' >> ~/.bashrc \
 ;fi
 
-# RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-# RUN apt-get update && apt install -y --no-install-recommends yarn
+RUN if [ ${YARN_INSTALL} = true ]; then \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt-get update \
+    && apt install -y yarn \
+;fi
 
 ## START: Nginx ##
 COPY ./nginx/conf/nginx.conf /etc/nginx/
