@@ -24,6 +24,10 @@ services:
         - YARN_INSTALL=${YARN_INSTALL}
         - NODE_VERSION=${NODE_VERSION}
         - INSTALL_NODE=${INSTALL_NODE}
+        - ADD_GROUP=${ADD_GROUP}
+        - GROUP_ID=${GROUP_ID}
+        - GROUP_NAME=${GROUP_NAME}
+        - USER_NAME=${USER_NAME}
         - http_proxy
         - https_proxy
         - no_proxy

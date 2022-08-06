@@ -98,7 +98,42 @@ ENV LC_ALL ${LOCALE}
 
 # Setting workdir
 ARG WORK_DIR
+ENV APP_WORKDIR ${WORK_DIR}
+
+# Workdir when access to the container
 WORKDIR /var/www
+
+# ADD ./startup.sh /opt/startup.sh
+# RUN sed -i 's/\r//g' /opt/startup.sh
+# CMD ["/bin/bash", "/opt/startup.sh"]
+
+# Group and Permission for folder
+ARG ADD_GROUP=${ADD_GROUP}
+
+ARG GROUP_ID=${GROUP_ID}
+ENV GROUPID ${GROUP_ID}
+
+ARG GROUP_NAME=${GROUP_NAME}
+ENV GROUPNAME ${GROUP_NAME}
+
+ARG USER_NAME=${USER_NAME}
+ENV USERNAME ${USER_NAME}
+
+RUN if [ ${ADD_GROUP} = true ]; then \
+    groupadd -g $GROUPID $GROUPNAME \
+    && useradd -g $GROUPID $USERNAME \
+;fi
+
+# ARG TARGET_ID=$(stat -c "%g" ${APP_WORKDIR})
+# ARG EXISTS=$(cat /etc/group | grep $TARGET_GID | wc -l)
+# RUN if [ $EXISTS == "0" ]; then \
+#     groupadd -g $TARGET_GID appgroup \
+#     && usermod -a -G appgroup minhdpc \
+# ;fi
+
+# RUN if [ $EXISTS != "0" ]; then \
+#     usermod -a -G $(getent group $TARGET_GID | cut -d: -f1) minhdpc \
+# ;fi
 
 # Add NVM binaries to root's .bashrc
 USER root
