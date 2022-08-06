@@ -115,6 +115,6 @@ RUN echo "exit 0" > /usr/sbin/policy-rc.d
 # nginx
 ARG PHP_VERSION
 ENV PHP_VERSION ${PHP_VERSION}
-CMD service php8.1-fpm start && nginx -g "daemon off;"
+CMD service php${PHP_VERSION}-fpm start && nginx -g "daemon off;"
 
 EXPOSE 80 443
