@@ -48,6 +48,12 @@ RUN if [ ${COMPOSER_INSTALL} = true ]; then \
     && ln -s /opt/composer.phar /usr/local/bin/composer \
 ;fi
 
+# Install composer laravel vapor
+ARG COMPOSER_LARAVEL_VAPOR=${COMPOSER_LARAVEL_VAPOR}
+RUN if [ ${COMPOSER_LARAVEL_VAPOR} = true ]; then \
+    /usr/local/bin/composer global require laravel/vapor-cli --update-with-dependencies \
+;fi
+
 # NVM arg and env
 ARG NVM_INSTALL=${NVM_INSTALL}
 ARG YARN_INSTALL=${YARN_INSTALL}
