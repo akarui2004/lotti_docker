@@ -46,6 +46,7 @@ RUN if [ ${COMPOSER_INSTALL} = true ]; then \
     cd /opt \
     && curl -sS https://getcomposer.org/installer | php \
     && ln -s /opt/composer.phar /usr/local/bin/composer \
+    && echo 'export PATH=~/.config/composer/vendor/bin:$PATH  #This will load all the bin in the composer' >> ~/.bashrc \
 ;fi
 
 # Install composer laravel vapor
@@ -107,7 +108,7 @@ ARG WORK_DIR
 ENV APP_WORKDIR ${WORK_DIR}
 
 # Workdir when access to the container
-WORKDIR /var/www
+WORKDIR ${APP_WORKDIR}
 
 # Group and Permission for folder
 ARG ADD_GROUP=${ADD_GROUP}
