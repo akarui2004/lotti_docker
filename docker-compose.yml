@@ -69,7 +69,6 @@ services:
   redis:
     platform: ${BUILD_PLATFORM}
     build: ./redis
-    tty: true
     volumes:
       - ${REDIS_DATA_PATH_HOST}/redis:/data
     command: --requirepass ${REDIS_PASSWORD}
