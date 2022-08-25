@@ -8,8 +8,6 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   redis:
     driver: ${VOLUMES_DRIVER}
-  meilisearch:
-    driver: ${VOLUMES_DRIVER}
 
 services:
   app:
@@ -45,7 +43,6 @@ services:
     depends_on:
       - mysql
       - redis
-      - meilisearch
     networks:
       - lotti
   mysql:
