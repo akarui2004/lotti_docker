@@ -79,3 +79,13 @@ services:
       - "${REDIS_PORT}:6379"
     networks:
       - lotti
+  meilisearch:
+    platform: ${BUILD_PLATFORM}
+    container_name: ${MEILISEARCH_CONTAINER_NAME}
+    image: getmeili/meilisearch:latest
+    volumes:
+      - ${MEILISEARCH_DATA_PATH_HOST}/meilisearch:/data.ms
+    ports:
+      - "${MEILISEARCH_HOST_PORT}:7700"
+    networks:
+      - lotti
