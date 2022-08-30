@@ -15,7 +15,7 @@ ARG PHP_VERSION
 
 ## Update the system again. Install the php8.1 and nginx
 RUN apt-get update \
-    && apt install -y php${PHP_VERSION} nginx
+    && apt install -y php${PHP_VERSION} nginx cron
 
 # Install needed extension for php
 RUN apt-get -y install php${PHP_VERSION}-fpm \
@@ -94,6 +94,13 @@ COPY ./nginx/conf/nginx.conf /etc/nginx/
 ADD ./nginx/default/index.php /var/www/html
 ## END: Nginx ##
 
+## START: Cron ##
+COPY ./cron/crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab
+RUN crontab /etc/cron.d/crontab
+RUN touch /var/log/cron.log
+## END: Cron ##
+
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
@@ -142,6 +149,6 @@ RUN echo "exit 0" > /usr/sbin/policy-rc.d
 # nginx
 ARG PHP_VERSION
 ENV PHP_VERSION ${PHP_VERSION}
-CMD service php${PHP_VERSION}-fpm start && nginx -g "daemon off;"
+CMD service php${PHP_VERSION}-fpm start && nginx -g "daemon off;" && cron && tail -f /var/log/cron.log
 
 EXPOSE 80 443
