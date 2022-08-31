@@ -146,9 +146,12 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
 # Policy
 RUN echo "exit 0" > /usr/sbin/policy-rc.d
 
+# Cron start
+ENTRYPOINT cron start && tail -f /var/log/cron.log
+
 # nginx
 ARG PHP_VERSION
 ENV PHP_VERSION ${PHP_VERSION}
-CMD service php${PHP_VERSION}-fpm start && nginx -g "daemon off;" && cron && tail -f /var/log/cron.log
+CMD service php${PHP_VERSION}-fpm start && nginx -g "daemon off;"
 
 EXPOSE 80 443
