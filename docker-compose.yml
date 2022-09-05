@@ -37,6 +37,7 @@ services:
       - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
       - ./app/php/php.ini:/etc/php/${PHP_VERSION}/cli/php.ini
+      - ./app/cron/log/cron.log:/var/log/cron.log
     ports:
       - "${NGINX_HTTP_PORT}:80"
       - "${NGINX_HTTPS_PORT}:443"

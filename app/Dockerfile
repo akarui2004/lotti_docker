@@ -98,7 +98,7 @@ ADD ./nginx/default/index.php /var/www/html
 COPY ./cron/crontab /etc/cron.d/crontab
 RUN chmod 0644 /etc/cron.d/crontab
 RUN crontab /etc/cron.d/crontab
-RUN touch /var/log/cron.log
+# RUN touch /var/log/cron.log
 ## END: Cron ##
 
 # Clean up
