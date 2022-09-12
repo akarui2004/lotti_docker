@@ -48,7 +48,7 @@ services:
       - lotti
   mysql:
     platform: ${BUILD_PLATFORM}
-    container_name: ${DB_CONTAINER_NAME}
+    container_name: ${MYSQL_CONTAINER_NAME}
     build:
       context: ./mysql
       args:
@@ -77,3 +77,24 @@ services:
       - "${REDIS_PORT}:6379"
     networks:
       - lotti
+  # localstack:
+  #   image: localstack/localstack:latest
+  #   platform: ${BUILD_PLATFORM}
+  #   container_name: ${LOCALSTACK_CONTAINER_NAME}
+  #   ports:
+  #     - '4566:4566'
+  #     - '9000:9000'
+  #   environment:
+  #     - SERVICES=${LOCALSTACK_SERVICES}
+  #     - DEBUG=${LOCALSTACK_ENABLE_DEBUG}
+  #     - PORT_WEB_UI=${LOCALSTACK_WEB_PORT}
+  #     - START_WEB=1
+  #     - DATA_DIR=${LOCALSTACK_DATA_DIR}
+  #     - DEFAULT_REGION=${S3_REGION}
+  #     - AWS_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+  #     - AWS_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+  #   volumes:
+  #     - ${S3_DATA_PATH_HOST}:/tmp/localstack
+  #     - ${S3_BASH_SCRIPT}:/docker-entrypoint-initaws.d/create-resources.sh
+  #   networks:
+  #     - lotti
