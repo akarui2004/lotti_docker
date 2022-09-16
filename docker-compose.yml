@@ -77,19 +77,19 @@ services:
       - "${REDIS_PORT}:6379"
     networks:
       - lotti
-  s3:
+  minio:
     platform: ${BUILD_PLATFORM}
     container_name: ${MINIO_S3_CONTAINER_NAME}
-    image: minio/minio
+    image: bitnami/minio:latest
     ports:
       - '9000:9000'
       - '9001:9001'
     environment:
       - MINIO_ROOT_USER=${MINIO_S3_ACCESS_KEY}
       - MINIO_ROOT_PASSWORD=${MINIO_S3_SECRET_KEY}
-      - MINIO_REGION_NAME=${MINIO_S3_REGION}
-    command: server --address ":9000" --console-address ":9001" /data
+      - MINIO_HTTP_TRACE=/opt/bitnami/minio/log/minio.log
     volumes:
       - ${MINIO_S3_DATA_PATH_HOST}:/data
+      - ${MINIO_S3_HTTP_TRACE_LOG}:/opt/bitnami/minio/log/minio.log
     networks:
       - lotti
