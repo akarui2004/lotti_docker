@@ -1,0 +1,10 @@
+version: "2"
+options:
+  verbose: true
+syncs:
+  lotti-sync:
+    sync_args: ['-perms=0']
+    sync_strategy: 'unison'
+    sync_host_ip: 'auto'
+    sync_excludes: ['.gitignore', '.idea/*','.git/*']
+    src: '/mnt/d/Projects/SourceCode/VietSwiss/lotti-backend'
