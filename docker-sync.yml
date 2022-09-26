@@ -3,8 +3,11 @@ options:
   verbose: true
 syncs:
   lotti-sync:
-    sync_args: ['-perms=0']
-    sync_strategy: 'unison'
+    # sync_args: ['-perms=0']
+    # sync_strategy: 'unison'
+    unison_image: eugenmayer/unison:2.51.3-4.12.0-ARM64
+    sync_userid: '1000'
+    sync_host: localhost
     sync_host_ip: 'auto'
-    sync_excludes: ['.gitignore', '.idea/*','.git/*']
-    src: '/mnt/d/Projects/SourceCode/VietSwiss/lotti-backend'
+    sync_excludes: ['.gitignore', '.idea/*','.git/*', 'node_modules/*', '.phpstorm.meta.php', 'vendor/_laravel_idea/*', 'docker/*', 'docker-compose.yml']
+    src: "${APP_CODE_PATH_HOST}"

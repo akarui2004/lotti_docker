@@ -39,6 +39,7 @@ RUN apt-get -y install php${PHP_VERSION}-fpm \
 
 # Copy the php config
 COPY ./php/x.pool.conf /usr/local/etc/php-fpm.d/
+# COPY ./php/www.conf /usr/local/etc/php-fpm.d/
 
 # Install composer
 ARG COMPOSER_INSTALL=${COMPOSER_INSTALL}
@@ -142,6 +143,15 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
 ;fi
+
+# Configure non-root user.
+ARG PUID=1000
+ENV PUID ${PUID}
+ARG PGID=1000
+ENV PGID ${PGID}
+
+RUN groupmod -o -g ${PGID} www-data && \
+    usermod -o -u ${PUID} -g www-data www-data
 
 # Policy
 RUN echo "exit 0" > /usr/sbin/policy-rc.d
