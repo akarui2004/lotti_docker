@@ -144,7 +144,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
 ;fi
 
-# Configure non-root user.
+# Configure non-root user. For docker-sync permission
 ARG PUID=1000
 ENV PUID ${PUID}
 ARG PGID=1000
