@@ -8,8 +8,6 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   redis:
     driver: ${VOLUMES_DRIVER}
-  lotti-sync:
-    external: true
 
 services:
   app:
@@ -35,7 +33,7 @@ services:
         - no_proxy
     tty: true
     volumes:
-      - ${APP_CODE_PATH_SYNC}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
       - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
       - ${APP_CRON_LOG_FILE}:/var/log/cron.log
