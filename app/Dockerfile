@@ -153,6 +153,11 @@ ENV PGID ${PGID}
 RUN groupmod -o -g ${PGID} www-data && \
     usermod -o -u ${PUID} -g www-data www-data
 
+USER root
+
+ADD ./script.sh /root/script.sh
+RUN chmod +x /root/script.sh
+
 # Policy
 RUN echo "exit 0" > /usr/sbin/policy-rc.d
 
