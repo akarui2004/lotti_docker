@@ -164,6 +164,8 @@ RUN echo "exit 0" > /usr/sbin/policy-rc.d
 # nginx
 ARG PHP_VERSION
 ENV PHP_VERSION ${PHP_VERSION}
-CMD service php${PHP_VERSION}-fpm start && nginx -g "daemon off;" & cron -f
+
+ENTRYPOINT [ "/root/script.sh" ]
+# CMD service php${PHP_VERSION}-fpm start && nginx -g "daemon off;" & cron -f
 
 EXPOSE 80 443

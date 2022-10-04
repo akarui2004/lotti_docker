@@ -1,3 +1,5 @@
 #!/bin/sh
 
-echo "Test sh"
+service php${PHP_VERSION}-fpm start
+nginx -g "daemon off;"
+cron -f
