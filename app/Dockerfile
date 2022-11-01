@@ -14,7 +14,7 @@ RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add -
 ARG PHP_VERSION
 
 ## Update the system again. Install the php8.1 and nginx
-RUN apt-get update \
+RUN apt-get update --fix-missing \
     && apt install -y php${PHP_VERSION} nginx cron
 
 # Install needed extension for php
@@ -34,8 +34,7 @@ RUN apt-get -y install php${PHP_VERSION}-fpm \
     php${PHP_VERSION}-intl \
     php${PHP_VERSION}-gd \
     php${PHP_VERSION}-imagick \
-    php${PHP_VERSION}-redis \
-    php${PHP_VERSION}-exif
+    php${PHP_VERSION}-redis
 
 # Copy the php config
 COPY ./php/x.pool.conf /usr/local/etc/php-fpm.d/
