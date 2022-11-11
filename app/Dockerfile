@@ -55,6 +55,27 @@ RUN if [ ${COMPOSER_LARAVEL_VAPOR} = true ]; then \
     /usr/local/bin/composer global require laravel/vapor-cli --update-with-dependencies \
 ;fi
 
+# Configure non-root user. For docker-sync permission
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+RUN userdel -f www-data
+
+RUN if [ getent group www-data ]; then \
+    groupdel www-data \
+;fi
+
+RUN groupadd -g ${GROUP_ID} www-data &&\
+    useradd -l -u ${USER_ID} -g www-data www-data
+
+RUN install -d -m 0755 -o www-data -g www-data /home/www-data &&\
+    chown --changes --silent --no-dereference --recursive --from=33:33 ${USER_ID}:${GROUP_ID} \
+      /home/www-data \
+      ~/.config/composer \
+      /var/lib/php/sessions
+
+# USER www-data
+
 # NVM arg and env
 ARG NVM_INSTALL=${NVM_INSTALL}
 ARG YARN_INSTALL=${YARN_INSTALL}
@@ -135,7 +156,7 @@ RUN if [ ${ADD_GROUP} = true ]; then \
 ;fi
 
 # Add NVM binaries to root's .bashrc
-USER root
+# USER root
 
 RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
@@ -143,16 +164,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
 ;fi
 
-# Configure non-root user. For docker-sync permission
-ARG PUID=1000
-ENV PUID ${PUID}
-ARG PGID=1000
-ENV PGID ${PGID}
-
-RUN groupmod -o -g ${PGID} www-data && \
-    usermod -o -u ${PUID} -g www-data www-data
-
-USER root
+# USER root
 
 ADD ./script.sh /root/script.sh
 RUN chmod +x /root/script.sh
