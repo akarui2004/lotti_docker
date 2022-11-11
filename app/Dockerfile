@@ -138,23 +138,6 @@ ENV APP_WORKDIR ${WORK_DIR}
 # Workdir when access to the container
 WORKDIR ${APP_WORKDIR}
 
-# Group and Permission for folder
-ARG ADD_GROUP=${ADD_GROUP}
-
-ARG GROUP_ID=${GROUP_ID}
-ENV GROUPID ${GROUP_ID}
-
-ARG GROUP_NAME=${GROUP_NAME}
-ENV GROUPNAME ${GROUP_NAME}
-
-ARG USER_NAME=${USER_NAME}
-ENV USERNAME ${USER_NAME}
-
-RUN if [ ${ADD_GROUP} = true ]; then \
-    groupadd -g $GROUPID $GROUPNAME \
-    && useradd -g $GROUPID $USERNAME \
-;fi
-
 # Add NVM binaries to root's .bashrc
 # USER root
 
